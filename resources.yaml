@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-app
+  template:
+    metadata:
+      labels:
+        app: weather-app
+    spec:
+      containers:
+        - name: weather-app
+          image:  'image-registry.openshift-image-registry.svc:5000/quarkus-deploy/weather-app:1.0'
+          imagePullPolicy: Always          
+          ports:
+            - containerPort: 8080          
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-app
+spec:
+  selector:
+    app: weather-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: weather-app
+spec:
+  to:
+    kind: Service
+    name: weather-app
+  port:
+    targetPort: 8080
