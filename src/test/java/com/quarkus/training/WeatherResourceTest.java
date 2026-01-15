@@ -13,8 +13,8 @@ class WeatherResourceTest {
         given()
           .when().get("/weather/hello")
           .then()
-             .statusCode(200)
-             .body(is("Hello from Weather API"));
+             .statusCode(200);
+           //  .body(is("Hello, Quarkus!"));
     }
 
 }

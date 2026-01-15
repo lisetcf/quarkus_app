@@ -1,5 +1,6 @@
 package com.quarkus.training;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
@@ -16,6 +17,9 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 @RequestScoped
 public class WeatherResource {
+
+    @ConfigProperty(name = "hello.message")
+    String message;
 
     @GET
     @Path("/hello")
@@ -36,6 +40,6 @@ public class WeatherResource {
     )
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "Hello from Weather API";
+        return message;
     }   
 }
